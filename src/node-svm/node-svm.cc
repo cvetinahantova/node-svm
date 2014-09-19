@@ -21,8 +21,8 @@ NAN_METHOD(NodeSvm::New) {
   } else {
     // Invoked as plain function `MyObject(...)`, turn into construct call.
     const int argc = 0;
-    Local<Value> argv[argc] = {  };
-    return scope.Close(constructor->NewInstance(argc, argv));
+    //Local<Value> argv[argc] = {  };
+    return scope.Close(constructor->NewInstance(argc, NULL));
   }
 }
 
