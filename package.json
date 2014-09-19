@@ -13,10 +13,6 @@
       ]
     }
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/nicolaspanel/node-svm.git"
-  },
   "keywords": [
     "svm",
     "machine learning",
