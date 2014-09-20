@@ -3,10 +3,14 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <float.h>
-#include <string.h>
+#include <string>
 #include <stdarg.h>
 #include <limits.h>
 #include <locale.h>
+
+#include <iostream>
+using std::cout;
+
 #include "svm.h"
 int libsvm_version = LIBSVM_VERSION;
 typedef float Qfloat;
@@ -2500,6 +2504,7 @@ double svm_get_svr_probability(const svm_model *model)
 
 double svm_predict_values(const svm_model *model, const svm_node *x, double* dec_values)
 {
+    cout<<"svm_predict_values";
 	int i;
 	if(model->param.svm_type == ONE_CLASS ||
 	   model->param.svm_type == EPSILON_SVR ||
@@ -2576,14 +2581,24 @@ double svm_predict_values(const svm_model *model, const svm_node *x, double* dec
 
 double svm_predict(const svm_model *model, const svm_node *x)
 {
+    cout<<"svm_predict\n";
+    cout<<"model->nr_class";
 	int nr_class = model->nr_class;
+	cout<<"svm_predict type condition\n";
 	double *dec_values;
+	cout<<"svm_predict type condition\n";
 	if(model->param.svm_type == ONE_CLASS ||
 	   model->param.svm_type == EPSILON_SVR ||
-	   model->param.svm_type == NU_SVR)
-		dec_values = Malloc(double, 1);
-	else 
+	   model->param.svm_type == NU_SVR){
+	        cout<<"before malloc";
+	   	    dec_values = Malloc(double, 1);
+	   }
+
+	else {
+	    cout<<"before malloc";
 		dec_values = Malloc(double, nr_class*(nr_class-1)/2);
+	}
+
 	double pred_result = svm_predict_values(model, x, dec_values);
 	free(dec_values);
 	return pred_result;

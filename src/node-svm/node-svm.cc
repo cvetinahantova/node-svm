@@ -12,7 +12,7 @@ NodeSvm::~NodeSvm(){
 
 NAN_METHOD(NodeSvm::New) {
   NanScope();
-
+  std::cout << "NodeSvn::New" << std::endl;
   if (args.IsConstructCall()) {
     // Invoked as constructor: `new MyObject(...)`
     NodeSvm* obj = new NodeSvm();
@@ -21,12 +21,13 @@ NAN_METHOD(NodeSvm::New) {
   } else {
     // Invoked as plain function `MyObject(...)`, turn into construct call.
     const int argc = 0;
-    Local<Value> argv[argc] = {  };
-    return scope.Close(constructor->NewInstance(argc, argv));
+    //Local<Value> argv[argc] = {  };
+    return scope.Close(constructor->NewInstance(argc, NULL));
   }
 }
 
 NAN_METHOD(NodeSvm::SetParameters) {
+  std::cout << "NodeSvm::SetParameters" << std::endl;
   NanScope();
   NodeSvm *obj = node::ObjectWrap::Unwrap<NodeSvm>(args.This());
   
@@ -164,6 +165,7 @@ NAN_METHOD(NodeSvm::SetModel) {
 }
 
 NAN_METHOD(NodeSvm::Predict) {
+std::cout << "NodeSvm::Predict" << std::endl;
   NanScope();
   NodeSvm *obj = node::ObjectWrap::Unwrap<NodeSvm>(args.This());
   
@@ -181,9 +183,12 @@ NAN_METHOD(NodeSvm::Predict) {
   }
   svm_node *x = new svm_node[inputs->Length() + 1];
   obj->getSvmNodes(inputs, x);
+  std::cout << "NodeSvm::Predict before predict" << std::endl;
   double prediction = obj->predict(x);
+  std::cout << "NodeSvm::Predict after predict" << std::endl;
   delete[] x;
   NanReturnValue(Number::New(prediction));
+  std::cout << "NodeSvm::Predict end" << std::endl;
 }
 
 NAN_METHOD(NodeSvm::PredictAsync) {

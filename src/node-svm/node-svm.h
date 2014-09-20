@@ -71,7 +71,12 @@ class NodeSvm : public node::ObjectWrap
     };
 
     void setParameters(Local<Object> obj){
+      std::cout << "node-svm->setParameters" << std::endl;
+
       struct svm_parameter *svm_params = new svm_parameter();
+
+      std::cout << "node-svm->setParameters middle" << std::endl;
+
       svm_params->svm_type = C_SVC;
       svm_params->kernel_type = RBF;
       svm_params->degree = 3;
@@ -87,6 +92,8 @@ class NodeSvm : public node::ObjectWrap
       svm_params->nr_weight = 0;
       svm_params->weight_label = NULL;
       svm_params->weight = NULL;
+
+      std::cout << "node-svm->setParameters middle" << std::endl;
 
       if (obj->Has(String::New("svmType"))){
         svm_params->svm_type = obj->Get(String::New("svmType"))->IntegerValue();
@@ -125,11 +132,21 @@ class NodeSvm : public node::ObjectWrap
         svm_params->probability = obj->Get(String::New("probability"))->IntegerValue();
       }
 
+      std::cout << "Params set" << std::endl;
+      std::cout << svm_params << std::endl;
+
       const char *error_msg;
+
+      std::cout << "svm_check_parameter" << std::endl;
       error_msg =  svm_check_parameter(svm_params);
-      std::cout << error_msg << std::endl;
+      std::cout << "svm_check_parameter completed" << std::endl;
+      //std::cout << error_msg << std::endl;
+      std::cout << "before error msg" << std::endl;
       assert(!error_msg);
+      std::cout << "after error msg" << std::endl;
       params = svm_params;
+
+    std::cout << "setParameters end" << std::endl;
     };
 
     void setModel(Local<Object> obj){
@@ -314,7 +331,8 @@ class NodeSvm : public node::ObjectWrap
     };
     
     double predict(svm_node *x){
-      return svm_predict(model, x);
+        std::cout << svm_predict << std::endl;
+        return svm_predict(model, x);
     }
 
     void predictProbabilities(svm_node *x, double* prob_estimates){

@@ -28,9 +28,9 @@ class TrainingWorker : public NanAsyncWorker {
   void HandleOKCallback () {
     NanScope();
 
-    Local<Value> argv[] = {};
+    //Local<Value> argv[] = {NULL};
 
-    callback->Call(0, argv);
+    callback->Call(0, NULL);
   };
 
  private:
